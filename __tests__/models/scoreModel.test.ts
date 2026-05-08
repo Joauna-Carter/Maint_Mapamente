@@ -5,8 +5,13 @@ jest.mock('../../config/database', () => ({
   default: { query: jest.fn() },
 }));
 
-import pool from '../../config/database';
-import { uploadScore, pullTop10OfUser, pullTop10OfCity, getPersonalBest, pullTop10Total } from '../../models/scoreModel';
+//This two imports were from original file
+//import pool from '../../config/database';
+//import { uploadScore, pullTop10OfUser, pullTop10OfCity, getPersonalBest, pullTop10Total } from '../../models/scoreModel';
+
+//The two imports below so it can work on Joauna Carter's windows
+import pool from '../../config/database.js';
+import { uploadScore, pullTop10OfUser, pullTop10OfCity, getPersonalBest, pullTop10Total } from '../../models/scoreModel.js';
 
 const mockQuery = pool.query as jest.Mock;
 
