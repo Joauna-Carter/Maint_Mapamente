@@ -13,7 +13,13 @@ router.get('/login', (_req: Request, res: Response) => {
   res.render('login');
 });
 
-router.get('/signup', (_req: Request, res: Response) => {
+//this makes it so logged-in users can't sign up
+router.get('/signup', (req: Request, res: Response) => {
+  if (req.session.userId) {
+    res.redirect('/profile');
+    return;
+  }
+
   res.render('signup');
 });
 
