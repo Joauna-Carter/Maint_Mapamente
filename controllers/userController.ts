@@ -11,6 +11,10 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 
 const SALT_ROUNDS = 12;
 
 async function signupPost(req: Request, res: Response): Promise<void> {
+  if (req.session.userId) {
+    res.redirect("/profile");
+    return;
+  }
   const { username, password, passwordCheck } = req.body;
 
   if (!username || !password || !passwordCheck) {
@@ -61,6 +65,20 @@ async function loginPost(req: Request, res: Response): Promise<void> {
   res.redirect("/profile");
 }
 
+// Logs the user out by destroying their session, clearing the session cookie,
+// and redirecting them back to the homepage so they no longer remain authenticated.
+async function logoutPost(req: Request, res: Response): Promise<void> {
+  req.session.destroy((err) => {
+    if (err) {
+      res.status(500).send("Could not log out.");
+      return;
+    }
+
+    res.clearCookie("connect.sid");
+    res.redirect("/");
+  });
+}
+
 // Directs to login if there isn't a a session, otherwise profile
 async function profileGet(req: Request, res: Response): Promise<void> {
   if (!req.session.userId) {
@@ -103,6 +121,7 @@ async function profilePhotoPost(req: Request, res: Response): Promise<void> {
 export {
   signupPost,
   loginPost,
+  logoutPost,
   profileGet,
   profilePhotoPost,
   upload
