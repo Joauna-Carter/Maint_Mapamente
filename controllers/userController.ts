@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import multer from "multer";
 import sharp from "sharp";
-import { createUser, findUserByUsername, findUserById, updateUserProfilePic } from "../models/userModel.js";
+import { createUser, deleteUser, findUserByUsername, findUserById, updateUserProfilePic } from "../models/userModel.js";
 import { getTop10OfUser } from "./scoreController.js";
 
 // Keep uploaded file in memory as a Buffer rather than writing to disk
@@ -45,14 +45,19 @@ async function loginPost(req: Request, res: Response): Promise<void> {
 
   const user = await findUserByUsername(username);
 
-  if (!user) {
+
+
+  //Check if user exists and is active before comparing password hash to prevent timing attacks
+  if (!user || !user.isActive) {
     res.render("login", { error: "Invalid username or password." });
     return;
   }
 
   const match = await bcrypt.compare(password, user.passwordHash);
 
-  if (!match) {
+  // If the password is wrong or the user is inactive, 
+  // show a generic error message to avoid giving hints to attackers
+  if (!match || !user.isActive) {
     res.render("login", { error: "Invalid username or password." });
     return;
   }
@@ -77,6 +82,29 @@ async function profileGet(req: Request, res: Response): Promise<void> {
   
   res.render("profile", { user, scores: await getTop10OfUser(user.userId)});
 }
+
+
+// Soft deletes the user by setting isActive to false.
+
+async function deletePost(req: Request, res: Response): Promise<void> { 
+  // if (!req.session.userId) {
+  //   res.redirect("/login");
+  //   return;
+  // }
+  const deleted = await deleteUser(req.session.userId);
+
+
+
+  if (!deleted) {
+  
+  }
+  res.redirect("/home");
+
+  // req.user.isActive = false;
+  // req.session.destroy(() => {
+  // }); 
+}
+
 
 // Handles profile picture upload: resizes to 200x200 WebP and stores raw bytes in the DB
 async function profilePhotoPost(req: Request, res: Response): Promise<void> {
