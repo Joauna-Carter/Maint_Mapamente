@@ -70,6 +70,7 @@ async function updateUserProfilePic(userId: number, picBuffer: Buffer): Promise<
 export {
   createUser,
   deleteUser,
+  deleteUser,
   findUserByUsername,
   findUserById,
   updateUserProfilePic,

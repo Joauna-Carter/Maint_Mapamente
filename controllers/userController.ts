@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import multer from "multer";
 import sharp from "sharp";
 import { createUser, deleteUser, findUserByUsername, findUserById, updateUserProfilePic } from "../models/userModel.js";
+import { createUser, deleteUser, findUserByUsername, findUserById, updateUserProfilePic } from "../models/userModel.js";
 import { getTop10OfUser } from "./scoreController.js";
 
 // Keep uploaded file in memory as a Buffer rather than writing to disk
@@ -50,13 +51,19 @@ async function loginPost(req: Request, res: Response): Promise<void> {
   const user = await findUserByUsername(username);
 
   //Check if user exists and is active before comparing password hash to prevent timing attacks
-  if (!user || !user.isActive) {
+
+
+  //Check if user exists and is active before comparing password hash to prevent timing attacks
+  if (!user || !user.isActive || !user.isActive) {
     res.render("login", { error: "Invalid username or password." });
     return;
   }
 
   const match = await bcrypt.compare(password, user.passwordHash);
 
+  // If the password is wrong or the user is inactive, 
+  // show a generic error message to avoid giving hints to attackers
+  if (!match || !user.isActive) {
   // If the password is wrong or the user is inactive, 
   // show a generic error message to avoid giving hints to attackers
   if (!match || !user.isActive) {

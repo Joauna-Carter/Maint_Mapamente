@@ -7,6 +7,8 @@ router.post('/addPlayer', signupPost);
 
 router.post('/loginPlayer', loginPost);
 
+router.post('/deleteUser', deletePost);
+
 router.post('/logout', logoutPost);
 
 router.post('/deleteUser', deletePost);
