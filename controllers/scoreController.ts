@@ -31,10 +31,21 @@ async function getTop10OfUser(userId:number): Promise<Score[]> {
 //Simple function to convert the ScoreEntry to the Score form to pass around
 async function convertScoreEntryToScore(entry: ScoreEntry): Promise<Score>{
     //simple function, pull the username and cityname, and push all the information.
-    const temp = {username: (await findUserById(entry.userId))!.username, correctCount: entry.correctCount, 
-        score: entry.score, cityName: (await getCityById(entry.cityId)).cityName};
+    //const temp = {username: (await findUserById(entry.userId))!.username, correctCount: entry.correctCount, 
+        //score: entry.score, cityName: (await getCityById(entry.cityId)).cityName};
+        
+        //this new temp does clickable usernames
+        const temp = {
+            userId: entry.userId,
+            username: (await findUserById(entry.userId))!.username,
+            correctCount: entry.correctCount, 
+            score: entry.score,
+            cityName: (await getCityById(entry.cityId)).cityName
+        };
     return temp
 }
+
+
 
 //Function to provide the information for the homepage
 async function homePage(req:Request,res:Response){

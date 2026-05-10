@@ -21,6 +21,7 @@ interface Question {
 
 //Type to keep track of the information that needs to be displayed on leaderboard
 interface Score {
+  userId: number;
   username : string;
   correctCount: number;
   score: number;

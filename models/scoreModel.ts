@@ -58,6 +58,7 @@ async function getPersonalBest(userId:number,cityId:number): Promise<ScoreEntry>
     return rows[0];
 }
 
+/* old pulltop10total where it pulls top 10 score rows not top 10 users
 //Function to get the top 10 scores of all time for the homepage
 async function pullTop10Total(): Promise<ScoreEntry[]>{
     const [rows] = (await pool.query<ScoreEntry[]>(
@@ -65,6 +66,21 @@ async function pullTop10Total(): Promise<ScoreEntry[]>{
     ));
     return rows;
 }
+*/
+
+//Revised Function to get the top 10 users by total score for the homepage
+async function pullTop10Total(): Promise<ScoreEntry[]>{
+    const [rows] = await pool.query<ScoreEntry[]>(
+        "SELECT MIN(scoreId) AS scoreId, userId, MIN(cityId) AS cityId, " +
+        "SUM(correctCount) AS correctCount, SUM(score) AS score, " +
+        "SUM(timeCompleted) AS timeCompleted, TRUE AS isPublic " +
+        "FROM Score WHERE isPublic = TRUE " +
+        "GROUP BY userId " +
+        "ORDER BY score DESC LIMIT 10"
+    );
+    return rows;
+}
+
 
 export {
     uploadScore,

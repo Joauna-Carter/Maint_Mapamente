@@ -84,8 +84,11 @@ async function logoutPost(req: Request, res: Response): Promise<void> {
   });
 }
 
+/* old function
 // Directs to login if there isn't a a session, otherwise profile
 async function profileGet(req: Request, res: Response): Promise<void> {
+  
+  
   if (!req.session.userId) {
     res.redirect("/login");
     return;
@@ -100,6 +103,36 @@ async function profileGet(req: Request, res: Response): Promise<void> {
   
   res.render("profile", { user, scores: await getTop10OfUser(user.userId)});
 }
+
+*/
+
+
+// Directs to login if there isn't a session,
+// otherwise loads either the logged-in profile or a public profile by id
+async function profileGet(req: Request, res: Response): Promise<void> {
+
+  const profileUserId = req.params.id
+    ? Number(req.params.id)
+    : req.session.userId;
+
+  if (!profileUserId) {
+    res.redirect("/login");
+    return;
+  }
+
+  const user = await findUserById(profileUserId);
+
+  if (!user || !user.isActive) {
+    res.redirect("/login");
+    return;
+  }
+
+  res.render("profile", {
+    user,
+    scores: await getTop10OfUser(user.userId)
+  });
+}
+
 
 // Soft deletes the logged-in user by setting isActive to false,
 // then destroys the session so the deleted account is logged out.

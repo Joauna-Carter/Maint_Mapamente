@@ -23,7 +23,7 @@
                     <% for(let i = 0; i < scores.length; i++) { let s = scores[i]; %>
                     <tr>
                         <td style="padding: 5px; text-align: center;"><%=i+1%></td>
-                        <td style="padding: 5px; text-align: center;"><%=s.username%></td>
+                        <td style="padding: 5px; text-align: center;"><a href="/profile/<%= s.userId %>"><%= s.username %></a>
                         <td style="padding: 5px; text-align: center;"><%=s.correctCount%> / 10</td>
                         <td style="padding: 5px; text-align: center;"><%=s.score%> pts</td>
                     </tr>

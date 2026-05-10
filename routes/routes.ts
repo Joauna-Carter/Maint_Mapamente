@@ -35,6 +35,7 @@ router.get('/madrid/quiz', (_req: Request, res: Response) => {
   res.render('madridQuiz');
 });
 
+router.get('/profile/:id', profileGet);
 router.get('/profile', profileGet);
 router.post('/profile/photo', upload.single('photo'), profilePhotoPost);
 
