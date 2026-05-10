@@ -61,10 +61,13 @@
                         Toggle Privacy On/Off
                     </button>
                     <br>
-                    <!--Button to delete account-->
-                    <button class="deleteButton">
-                        Delete Account
-                    </button>
+                    <!-- Button to delete account (Now working)-->
+                    <form action="/deleteUser" method="POST" style="margin:10px;"
+                        onsubmit="return confirm('Are you sure you want to delete your account?');">
+                        <button type="submit" class="deleteButton">
+                            Delete Account
+                        </button>
+                    </form>
 
                     <br>
 

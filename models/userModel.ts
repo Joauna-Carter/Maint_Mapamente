@@ -11,6 +11,34 @@ async function createUser(username: string, passwordHash: string): Promise<boole
   return result.affectedRows === 1;
 }
 
+// Soft deletes a user by setting isActive to false. 
+// Returns true if successful, false if the user doesn't exist or is already inactive
+
+/* Original deleteuser
+
+// Soft deletes a user by setting isActive to false. 
+// Returns true if successful, false if the user doesn't exist or is already inactive
+async function deleteUser(userID: number): Promise<boolean> {
+  const [result] = await pool.query<ResultSetHeader>(
+    "UPDATE User SET isActive = ? WHERE userId = ?",
+    [false, userID]
+  );
+  return result.affectedRows === 1;
+}
+
+
+*/
+
+//New deleteUser after fixes
+async function deleteUser(userID: number): Promise<boolean> {
+  const [result] = await pool.query<ResultSetHeader>(
+    "UPDATE User SET isActive = false WHERE userId = ? AND isActive = true",
+    [userID]
+  );
+  return result.affectedRows === 1;
+}
+
+
 // Find a user from a username. Returns null if it doesn't exist
 async function findUserByUsername(username: string): Promise<UserEntry | null> {
   const [rows] = await pool.query<UserEntry[]>(
@@ -41,6 +69,7 @@ async function updateUserProfilePic(userId: number, picBuffer: Buffer): Promise<
 
 export {
   createUser,
+  deleteUser,
   findUserByUsername,
   findUserById,
   updateUserProfilePic,
