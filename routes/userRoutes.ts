@@ -11,6 +11,4 @@ router.post('/deleteUser', deletePost);
 
 router.post('/logout', logoutPost);
 
-router.post('/deleteUser', deletePost);
-
 export default router;
