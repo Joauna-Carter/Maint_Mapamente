@@ -7,6 +7,11 @@
         <link rel="stylesheet" href="/stylesheets/style.css">
         <title>Mapamente</title>
         <link rel="icon" type="image/png" href="/images/Logo.png">
+        <!-- <script type="module" src=".../theme.js"> </script> -->
+        <script> 
+            const theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+        </script>
     </head>
 
     <body>

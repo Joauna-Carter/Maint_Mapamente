@@ -1,7 +1,10 @@
 <!--This is for the profile page (/profile)-->
 <!--Assuming I'm passed a UserEntry called user and a list of Score called scores-->
 
+
 <%- include('partials/header') %>
+    <!-- import { toggleTheme } from "../theme.js"; -->
+    
 
         <header class = "pageTitle">
             Hey <%= user.username %>!
@@ -52,7 +55,8 @@
                     <br><br><br><br><br><br><br><br><br>
                     Settings:<br>
                     <!--Button to toggle account from light to dark mode-->
-                    <button class="fancyButton" style="margin:10px;">
+                    <!-- button logic is within theme.js -->
+                    <button id="themeToggle" class="fancyButton" style="margin:10px;">
                         Toggle Light/Dark Mode
                     </button>
                     <br>
@@ -89,4 +93,7 @@
     document.getElementById('photoForm').submit();
   });
 </script>
+<!--Script to import theme.js for toggling light/dark mode on click-->
+<script src="/js/theme.js"/>
+
 <%- include('partials/footer') %>

@@ -1,7 +1,7 @@
 :root { /* Variables that control colors for light mode: */
   --dark-text: #2E2015;
   --light-text: #f1eae0;
-  --label-text: rgb(58, 44, 3);
+  /* --label-text: rgb(58, 44, 3); */
   --background-color: #f1eae0;
   --gradient-color: rgba(92, 66, 40,0.8);
   --tile-color: wheat;
@@ -25,7 +25,7 @@
 }
 /* Automatically uses dark variables if system settings are on dark mode: */
 @media (prefers-color-scheme: dark) { 
-  :root { /* Variables that control colors for dark mode: */
+  :root.dark { /* Variables that control colors for dark mode: */
     --dark-text: rgb(218, 223, 228);
     --light-text: rgb(218, 223, 228);
     --background-color: rgb(85, 102, 124);
