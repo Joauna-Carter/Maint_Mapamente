@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import multer from "multer";
 import sharp from "sharp";
-import { createUser, deleteUser, findUserByUsername, findUserById, updateUserProfilePic } from "../models/userModel.js";
+import { privateUser, publicUser, createUser, deleteUser, findUserByUsername, findUserById, updateUserProfilePic } from "../models/userModel.js";
 import { getTop10OfUser } from "./scoreController.js";
 
 // Keep uploaded file in memory as a Buffer rather than writing to disk
@@ -160,7 +160,28 @@ async function deletePost(req: Request, res: Response): Promise<void> {
   // }); 
 }
 
-*/ 
+*/
+// Toggles the privacy of an account
+async function togglePrivacy(req: Request, res: Response){
+  const user = await findUserById(req.params.userID);
+
+  if(user?.isPublic){
+      const privated = await privateUser(req.session.userID);
+
+      if(!privated){
+        res.status(500).send("Could not Private account.");
+        return;
+      }
+
+  } else{
+      const unprivated = await publicUser(req.session.userID);
+      if(!unprivated){
+        res.status(500).send("Could not make account Public.");
+        return;
+      }
+  }
+}
+
 
 //New deletePost with the fixes
 async function deletePost(req: Request, res: Response): Promise<void> {
@@ -216,5 +237,6 @@ export {
   deletePost,
   profileGet,
   profilePhotoPost,
+  togglePrivacy,
   upload
 }

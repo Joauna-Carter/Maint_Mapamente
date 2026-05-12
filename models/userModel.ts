@@ -29,6 +29,29 @@ async function deleteUser(userID: number): Promise<boolean> {
 
 */
 
+
+//privates an user
+async function privateUser(userID: number): Promise<boolean> {
+    const [result] = await pool.query<ResultSetHeader>(
+    "UPDATE User SET isPublic = true WHERE userId = ? AND isPublic = false",
+    [userID]
+  );
+  return result.affectedRows === 1;
+
+}
+//un privates an user
+async function publicUser(userID: number): Promise<boolean> {
+    const [result] = await pool.query<ResultSetHeader>(
+    "UPDATE User SET isPublic = false WHERE userId = ? AND isPublic = true",
+    [userID]
+  );
+  return result.affectedRows === 1;
+
+}
+
+
+
+
 //New deleteUser after fixes
 async function deleteUser(userID: number): Promise<boolean> {
   const [result] = await pool.query<ResultSetHeader>(
@@ -73,4 +96,6 @@ export {
   findUserByUsername,
   findUserById,
   updateUserProfilePic,
+  privateUser,
+  publicUser
 }
