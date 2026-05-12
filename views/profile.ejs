@@ -2,9 +2,7 @@
 <!--Assuming I'm passed a UserEntry called user and a list of Score called scores-->
 
 
-<%- include('partials/header') %>
-    <!-- import { toggleTheme } from "../theme.js"; -->
-    
+<%- include('partials/header') %>    
 
         <header class = "pageTitle">
             Hey <%= user.username %>!
@@ -94,6 +92,6 @@
   });
 </script>
 <!--Script to import theme.js for toggling light/dark mode on click-->
-<script src="/js/theme.js"/>
+<script src="/js/theme.js"></script>
 
 <%- include('partials/footer') %>

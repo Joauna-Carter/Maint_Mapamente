@@ -2,16 +2,18 @@
 
 <!DOCTYPE html>
 <html>
-    <!--This head is so the tab has the logo and Mapamente name.-->
+    <!--This head is so the tab has the logo, the Mapamente name, and a flash prevention system.-->
     <head>
-        <link rel="stylesheet" href="/stylesheets/style.css">
-        <title>Mapamente</title>
-        <link rel="icon" type="image/png" href="/images/Logo.png">
-        <!-- <script type="module" src=".../theme.js"> </script> -->
+        <!-- Prevents the browser loading the light-mode default page, before quickly changing to dark-mode -->
+        <!-- Imperative that this script runs before the stylesheet -->
         <script> 
             const theme = localStorage.getItem('theme') || 'light';
             document.documentElement.classList.toggle('dark', theme === 'dark');
         </script>
+        <link rel="stylesheet" href="/stylesheets/style.css">
+        <title>Mapamente</title>
+        <link rel="icon" type="image/png" href="/images/Logo.png">
+        
     </head>
 
     <body>
