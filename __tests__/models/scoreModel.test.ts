@@ -1,3 +1,4 @@
+
 // __esModule: true tells ts-jest this is a default-export module; without it,
 // esModuleInterop won't wire up the default import and pool resolves to undefined.
 jest.mock('../../config/database', () => ({

@@ -1,3 +1,4 @@
+/// <reference types="jest" />
 import { supply10FromCityAndPersonalBest, getTop10OfUser, homePage } from '../../controllers/scoreController.js';
 
 jest.mock('../../models/scoreModel.js');
@@ -47,7 +48,7 @@ describe('supply10FromCityAndPersonalBest', () => {
     await supply10FromCityAndPersonalBest(req, res);
 
     expect(res.render).toHaveBeenCalledWith('leaderboardTemplate', {
-      scores: [{ username: 'alice', correctCount: 8, score: 5000, cityName: 'Rome' }],
+      scores: [{ userId: 10, username: 'alice', correctCount: 8, score: 5000, cityName: 'Rome' }],
       cityName: 'Rome',
       personalBest: undefined,
     });
@@ -89,8 +90,8 @@ describe('getTop10OfUser', () => {
     const result = await getTop10OfUser(10);
 
     expect(result).toHaveLength(2);
-    expect(result[0]).toEqual({ username: 'alice', correctCount: 8, score: 5000, cityName: 'Rome' });
-    expect(result[1]).toEqual({ username: 'alice', correctCount: 5, score: 3000, cityName: 'Rome' });
+    expect(result[0]).toEqual({ userId: 10, username: 'alice', correctCount: 8, score: 5000, cityName: 'Rome' });
+    expect(result[1]).toEqual({ userId: 10, username: 'alice', correctCount: 5, score: 3000, cityName: 'Rome' });
   });
 
   it('returns an empty array when the user has no scores', async () => {
@@ -112,7 +113,7 @@ describe('homePage', () => {
     await homePage(req, res);
 
     expect(res.render).toHaveBeenCalledWith('home', {
-      scores: [{ username: 'alice', correctCount: 8, score: 5000, cityName: 'Rome' }],
+      scores: [{ userId: 10, username: 'alice', correctCount: 8, score: 5000, cityName: 'Rome' }],
     });
   });
 
