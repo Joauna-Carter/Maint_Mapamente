@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import "../types.js";
 import bcrypt from "bcrypt";
 import multer from "multer";
 import sharp from "sharp";
@@ -110,7 +111,6 @@ async function profileGet(req: Request, res: Response): Promise<void> {
 // Directs to login if there isn't a session,
 // otherwise loads either the logged-in profile or a public profile by id
 async function profileGet(req: Request, res: Response): Promise<void> {
-
   const profileUserId = req.params.id
     ? Number(req.params.id)
     : req.session.userId;
@@ -124,6 +124,18 @@ async function profileGet(req: Request, res: Response): Promise<void> {
 
   if (!user || !user.isActive) {
     res.redirect("/login");
+    return;
+  }
+
+  const isOwnProfile = req.session.userId === user.userId;
+
+  if (!user.isPublic && !isOwnProfile) {
+    res.send(`
+      <script>
+        alert("This user profile is private.");
+        window.history.back();
+      </script>
+    `);
     return;
   }
 
@@ -162,24 +174,36 @@ async function deletePost(req: Request, res: Response): Promise<void> {
 
 */
 // Toggles the privacy of an account
-async function togglePrivacy(req: Request, res: Response){
-  const user = await findUserById(req.params.userID);
-
-  if(user?.isPublic){
-      const privated = await privateUser(req.session.userID);
-
-      if(!privated){
-        res.status(500).send("Could not Private account.");
-        return;
-      }
-
-  } else{
-      const unprivated = await publicUser(req.session.userID);
-      if(!unprivated){
-        res.status(500).send("Could not make account Public.");
-        return;
-      }
+async function togglePrivacy(req: Request, res: Response): Promise<void> {
+  if (!req.session.userId) {
+    res.redirect("/login");
+    return;
   }
+
+  const user = await findUserById(req.session.userId);
+
+  if (!user) {
+    res.redirect("/login");
+    return;
+  }
+
+  if (user.isPublic) {
+    const privated = await privateUser(req.session.userId);
+
+    if (!privated) {
+      res.status(500).send("Could not private account.");
+      return;
+    }
+  } else {
+    const unprivated = await publicUser(req.session.userId);
+
+    if (!unprivated) {
+      res.status(500).send("Could not make account public.");
+      return;
+    }
+  }
+
+  res.redirect("/profile");
 }
 
 

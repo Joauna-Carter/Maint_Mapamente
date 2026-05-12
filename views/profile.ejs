@@ -59,9 +59,11 @@
                     </button>
                     <br>
                     <!--Button to toggle account from public to private-->
-                    <button action="/togglePrivacy"  class="fancyButton" style="margin:10px;">
-                        Toggle Privacy On/Off
-                    </button>
+                    <form action="/togglePrivacy" method="POST" style="margin:10px;">
+                        <button type="submit" class="fancyButton">
+                            Profile Visibility: <%= user.isPublic ? "Public" : "Private" %>
+                        </button>
+                    </form>
                     <br>
                     <!-- Button to delete account (Now working)-->
                     <form action="/deleteUser" method="POST" style="margin:10px;"

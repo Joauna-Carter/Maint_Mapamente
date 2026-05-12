@@ -1,4 +1,4 @@
-import { deletePost, loginPost, logoutPost, signupPost } from '../controllers/userController.js';
+import { deletePost, loginPost, logoutPost, signupPost, togglePrivacy } from '../controllers/userController.js';
 import { Router } from 'express';
 
 const router = Router();
@@ -10,5 +10,7 @@ router.post('/loginPlayer', loginPost);
 router.post('/deleteUser', deletePost);
 
 router.post('/logout', logoutPost);
+
+router.post('/togglePrivacy', togglePrivacy);
 
 export default router;

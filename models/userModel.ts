@@ -30,25 +30,22 @@ async function deleteUser(userID: number): Promise<boolean> {
 */
 
 
-//privates an user
+// privates a user
 async function privateUser(userID: number): Promise<boolean> {
-    const [result] = await pool.query<ResultSetHeader>(
-    "UPDATE User SET isPublic = true WHERE userId = ? AND isPublic = false",
+  const [result] = await pool.query<ResultSetHeader>(
+    "UPDATE User SET isPublic = false WHERE userId = ?",
     [userID]
   );
   return result.affectedRows === 1;
-
 }
-//un privates an user
+
 async function publicUser(userID: number): Promise<boolean> {
-    const [result] = await pool.query<ResultSetHeader>(
-    "UPDATE User SET isPublic = false WHERE userId = ? AND isPublic = true",
+  const [result] = await pool.query<ResultSetHeader>(
+    "UPDATE User SET isPublic = true WHERE userId = ?",
     [userID]
   );
   return result.affectedRows === 1;
-
 }
-
 
 
 
